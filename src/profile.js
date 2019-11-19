@@ -19,7 +19,7 @@ function loadTraderStandings(playerData = "") {
     // get trader data and update by profile info
     let dynTrader;
     // Check if trader standing data exists
-    /*if (profileCharData.hasOwnProperty("TraderStandings")) {
+    if (profileCharData.hasOwnProperty("TraderStandings")) {
         for (dynTrader of trader.getDynamicTraders()) {
             let profileStanding = profileCharData.TraderStandings[dynTrader];
             let traderLoyality = trader.get(dynTrader).data.loyalty;
@@ -46,7 +46,7 @@ function loadTraderStandings(playerData = "") {
         // save profile
         profileData.data[1] = profileCharData;
         setCharacterData(profileData);
-    }*/
+    }
 	if(playerData != "")
 		return profileData;
 }
@@ -197,7 +197,7 @@ function getStashType() {
 
 function setCharacterData(data) {
     if (typeof data.data !== "undefined") {
-        data = data.data[0];
+        data = data.data[1];
     }
     utility.writeJson("data/profiles/character_" + constants.getActiveID() + ".json", data);
 }
@@ -386,8 +386,8 @@ function changeNickname(info) {
     }
 
     // change nickname
-    tmpList.data[0].Info.Nickname = info.nickname;
-    tmpList.data[0].Info.LowerNickname = info.nickname.toLowerCase();
+    tmpList.data[1].Info.Nickname = info.nickname;
+    tmpList.data[1].Info.LowerNickname = info.nickname.toLowerCase();
 
     setCharacterData(tmpList);
     return (
@@ -400,7 +400,7 @@ function changeNickname(info) {
 function changeVoice(info) {
     let tmpList = getCharacterData();
 
-    tmpList.data[0].Info.Voice = info.voice;
+    tmpList.data[1].Info.Voice = info.voice;
 
     setCharacterData(tmpList);
 }

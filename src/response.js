@@ -62,12 +62,8 @@ function get(req, body) {
         return "MAPCONFIG";
     }
 
-    // raid banners
-    if (url.includes("files/CONTENT/banners")) {
-        return "CONTENT";
-    }
     // game images
-    if (url.includes(".jpg") || url.includes(".png") || url.includes("/data/images/") || url.includes("/files/quest") || url.includes("/files/handbook") || url.includes("/files/trader/avatar")) {
+    if (url.includes("/data/images/") || url.includes("/files/quest") || url.includes("/files/handbook") || url.includes("/files/trader/avatar")) {
         return "IMAGE";
     }
     if (url.includes("/notifierBase") || url.includes("/notifierServer")) { // notifier custom link
@@ -77,7 +73,10 @@ function get(req, body) {
         return 'NULLGET';
     }
 
-
+    // raid banners
+    if (url.includes("/uploads/")) {
+        return "CONTENT";
+    }
 
     // menu localisation
     if (url.includes(localeMenu)) {
@@ -187,7 +186,7 @@ function get(req, body) {
             break;
 
         case "/client/trading/api/getTradersList":
-            output = JSON.stringify(trader.loadAllTraders());
+            output = JSON.stringify(trader.getList());
             break;
 
         case "/client/server/list":
@@ -267,9 +266,7 @@ function get(req, body) {
             output = '{"err":0,"errmsg":null,"data":null}';
             break;
 		case "/client/game/config":
-			let tempUrl = backendUrl;
-			output = '{"err":0,"errmsg":null,"data":{"queued": false, "banTime": 0, "hash": "BAN0", "lang": "en", "aid": "' + constants.getActiveID() + '", "token": "token_' + constants.getActiveID() + '", "taxonomy": "341", "activeProfileId": "5c71b934354682353958e984", "nickname": "user", "backend": {"Trading":"' + tempUrl + '", "Messaging":"' + tempUrl + '", "Main":"' + tempUrl + '", "RagFair":"' + tempUrl + '"}, "totalInGame": 0}}';
-			console.log(output);
+			output = '{"err":0,"errmsg":null,"data":{"queued": false, "banTime": 0, "hash": "BAN0", "lang": "en", "aid": "' + constants.getActiveID() + '", "token": "token_' + constants.getActiveID() + '", "taxonomy": "341", "activeProfileId": "5c71b934354682353958e984", "nickname": "user", "backend": {"Trading":"' + backendUrl + '", "Messaging":"' + backendUrl + '", "Main":"' + backendUrl + '", "RagFair":"' + backendUrl + '"}, "totalInGame": 0}}';
 			break;
 		case "/client/customization":
 			output = utility.readJson('data/configs/customization/customization.json');

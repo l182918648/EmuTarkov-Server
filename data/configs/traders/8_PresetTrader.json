@@ -5,7 +5,7 @@
 	"surname": "PresetTrader",
 	"nickname": "PresetTrader",
 	"location": "Priozersky reserve",
-	"avatar": "/files/trader/avatar/none.jpg",
+	"avatar": "/files/trader/avatar/5c06531a86f7746319710e1b.jpg",
 	"balance_rub": 80000000,
 	"balance_dol": 0,
 	"balance_eur": 0,
@@ -14,7 +14,7 @@
 	"discount_end": 0,
 	"buyer_up": true,
 	"currency": "RUB",
-	"supply_next_time": 1574173600,
+	"supply_next_time": 1573795600,
 	"repair": {
 		"availability": false,
 		"quality": "1",

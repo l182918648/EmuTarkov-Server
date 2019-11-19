@@ -11,27 +11,29 @@ function HideoutUpgrade(tmplist,body)
     //pay money or delete items
 	for(var itemToPay of body.items )
 	{
-		for(var inventoryItem in tmplist.data[0].Inventory.items)
+		for(var inventoryItem in tmplist.data[1].Inventory.items)
 		{
-			if(tmplist.data[0].Inventory.items[inventoryItem]._id == itemToPay.id )//find the specific item in inventory
+			
+			if(tmplist.data[1].Inventory.items[inventoryItem]._id == itemToPay.id )//find the specific item in inventory
 			{
-				if(tmplist.data[0].Inventory.items[inventoryItem]._tpl == "5449016a4bdc2d6f028b456f")// if its money ..
+
+				if(tmplist.data[1].Inventory.items[inventoryItem]._tpl == "5449016a4bdc2d6f028b456f")// if its money ..
 				{
-					tmplist.data[0].Inventory.items[inventoryItem].upd.StackObjectsCount -= itemToPay.count;
+					tmplist.data[1].Inventory.items[inventoryItem].upd.StackObjectsCount -= itemToPay.count;
 				}
 				else //if its construction/barter items
 				{	
-					move_f.removeItem(tmplist, { "Action":"Remove", "item" : tmplist.data[0].Inventory.items[inventoryItem]._id } );
+					move_f.removeItem(tmplist, { "Action":"Remove", "item" : tmplist.data[1].Inventory.items[inventoryItem]._id } );
 				}		
 			}
 		}
 	}
 
 	//time construction management
-	for(var hideoutArea in tmplist.data[0].Hideout.Areas)
+	for(var hideoutArea in tmplist.data[1].Hideout.Areas)
 	{	
 		//find areaType in profile
-		if(tmplist.data[0].Hideout.Areas[hideoutArea].type == body.areaType)
+		if(tmplist.data[1].Hideout.Areas[hideoutArea].type == body.areaType)
 		{
 
 			for( var hideout_stage in hideout_areas_config.data)
@@ -40,12 +42,12 @@ function HideoutUpgrade(tmplist,body)
 				if( hideout_areas_config.data[hideout_stage].type == body.areaType)
 				{
 					//get construction time
-					var ctime = hideout_areas_config.data[hideout_stage].stages[ tmplist.data[0].Hideout.Areas[hideoutArea].level + 1 ].constructionTime;
+					var ctime = hideout_areas_config.data[hideout_stage].stages[ tmplist.data[1].Hideout.Areas[hideoutArea].level + 1 ].constructionTime;
 					if(ctime > 0 )
 					{	
 						var timestamp = Math.floor(Date.now() / 1000);
-						tmplist.data[0].Hideout.Areas[hideoutArea].completeTime = timestamp + 60 ;
-						tmplist.data[0].Hideout.Areas[hideoutArea].constructing = true;
+						tmplist.data[1].Hideout.Areas[hideoutArea].completeTime = timestamp + 60 ;
+						tmplist.data[1].Hideout.Areas[hideoutArea].constructing = true;
 					}
 				}				
 			}
@@ -61,13 +63,13 @@ function HideoutUpgrade(tmplist,body)
 //validating the upgrade
 function HideoutUpgradeComplete(tmplist,body)
 {
-	for(var hideoutArea in tmplist.data[0].Hideout.Areas)
+	for(var hideoutArea in tmplist.data[1].Hideout.Areas)
 	{
-		if(tmplist.data[0].Hideout.Areas[hideoutArea].type == body.areaType)
+		if(tmplist.data[1].Hideout.Areas[hideoutArea].type == body.areaType)
 		{
-			tmplist.data[0].Hideout.Areas[hideoutArea].level++;	
-			tmplist.data[0].Hideout.Areas[hideoutArea].completeTime = 0;
-			tmplist.data[0].Hideout.Areas[hideoutArea].constructing = false;
+			tmplist.data[1].Hideout.Areas[hideoutArea].level++;	
+			tmplist.data[1].Hideout.Areas[hideoutArea].completeTime = 0;
+			tmplist.data[1].Hideout.Areas[hideoutArea].constructing = false;
 
 			//and then apply bonusses or its auo ? 		
 		}
@@ -85,13 +87,13 @@ function HideoutPutItemsInAreaSlots(tmplist,body)
 {
 	for(var itemToMove in body.items)
 	{
-		for(var inventoryItem of tmplist.data[0].Inventory.items)
+		for(var inventoryItem of tmplist.data[1].Inventory.items)
 		{
 			if(body.items[itemToMove].id == inventoryItem._id )
 			{
-				for( let area in tmplist.data[0].Hideout.Areas)
+				for( let area in tmplist.data[1].Hideout.Areas)
 				{
-					if( tmplist.data[0].Hideout.Areas[area].type == body.areaType)
+					if( tmplist.data[1].Hideout.Areas[area].type == body.areaType)
 					{
 						let slot_to_add = 
 						{
@@ -101,7 +103,7 @@ function HideoutPutItemsInAreaSlots(tmplist,body)
 								"upd": inventoryItem.upd
 							}]
 						}
-						tmplist.data[0].Hideout.Areas[area].slots.push(slot_to_add);
+						tmplist.data[1].Hideout.Areas[area].slots.push(slot_to_add);
 						move_f.removeItem(tmplist, { "Action":"Remove", "item" : inventoryItem._id } );
 					}
 				}
@@ -116,13 +118,13 @@ function HideoutPutItemsInAreaSlots(tmplist,body)
 
 function HideoutTakeItemsFromAreaSlots(tmplist,body)
 {
-	for( let area in tmplist.data[0].Hideout.Areas)
+	for( let area in tmplist.data[1].Hideout.Areas)
 	{
-		if( tmplist.data[0].Hideout.Areas[area].type == body.areaType)
+		if( tmplist.data[1].Hideout.Areas[area].type == body.areaType)
 		{
 			//should use body.slots[0] to get the array index but since its not managed like that, its different
-			//move this to inventory with new location -->  tmplist.data[0].Hideout.Areas[area].slots[0].item[0]
-			//then manual remove --> tmplist.data[0].Hideout.Areas[area].slots.splice(0,1);
+			//move this to inventory with new location -->  tmplist.data[1].Hideout.Areas[area].slots[0].item[0]
+			//then manual remove --> tmplist.data[1].Hideout.Areas[area].slots.splice(0,1);
 		}
 	}
 	//profile.setCharacterData(tmplist);
@@ -133,11 +135,11 @@ function HideoutTakeItemsFromAreaSlots(tmplist,body)
 function HideoutToggleArea(tmplist,body)
 {
 
-	for(var area in tmplist.data[0].Hideout.Areas)
+	for(var area in tmplist.data[1].Hideout.Areas)
 	{
-		if( tmplist.data[0].Hideout.Areas[area].type == body.areaType )
+		if( tmplist.data[1].Hideout.Areas[area].type == body.areaType )
 		{	
-			tmplist.data[0].Hideout.Areas[area].active = body.enabled;
+			tmplist.data[1].Hideout.Areas[area].active = body.enabled;
 		}
 	}
 

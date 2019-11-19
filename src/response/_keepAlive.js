@@ -6,7 +6,7 @@ const trader = require('../trader.js');
 
 function main() {
     let update_per = 3600;// update each hour
-    let tradersToUpdateList = trader.loadAllTraders();
+    let tradersToUpdateList = trader.getList();
     let flag = false;
     tradersToUpdateList = tradersToUpdateList.data;
     let timeNow = Math.floor(Date.now() / 1000);
@@ -25,6 +25,9 @@ function main() {
 			//console.log(newTraderTime);
             trader.setTrader(tradersToUpdateList[i]);
         }
+    }
+    if(flag){
+        trader.loadAllTraders();
     }
     return; // not finished
 }
